@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Databloom AI & Tech | Premium AI Education</title>
+    <meta name="description" content="Premium AI training and enterprise consulting. Master Artificial Intelligence.">
+    
+    <!-- Fonts: Manrope (Display) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f8f9fa',
+                            100: '#f1f3f5',
+                            900: '#111111',
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #111111;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4d4d4; }
+
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+
+        /* Vercel/Linear Inspired Spotlight Effect */
+        .spotlight-wrapper {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .spotlight-wrapper::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(0, 0, 0, 0.04), 
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .spotlight-wrapper:hover::before { opacity: 1; }
+        .spotlight-wrapper:hover {
+            border-color: rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+            transform: translateY(-4px);
+        }
+        
+        .spotlight-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Smooth Expanding Section */
+        .expand-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .expand-content.open {
+            grid-template-rows: 1fr;
+        }
+        .expand-inner {
+            overflow: hidden;
+        }
+
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: absolute;
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(240,240,240,1) 0%, rgba(255,255,255,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="relative selection:bg-brand-100 selection:text-brand-900">
+
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-white/60 backdrop-blur-md border-b border-gray-100/50"></div>
+        <div class="max-w-6xl mx-auto px-6 relative flex justify-between items-center h-16">
+            <a href="#" class="flex items-center space-x-2 group">
+                <div class="w-6 h-6 bg-brand-900 rounded-md flex items-center justify-center">
+                    <i data-lucide="layers" class="w-3.5 h-3.5 text-white"></i>
+                </div>
+                <span class="font-display font-bold text-lg tracking-tight text-brand-900">Databloom</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#programs" class="text-sm font-medium text-gray-500 hover:text-brand-900 transition-colors">Programs</a>
+                <a href="#workflow" class="text-sm font-medium text-gray-500 hover:text-brand-900 transition-colors">Methodology</a>
+                <a href="#consultation" class="px-4 py-2 rounded-full text-sm font-medium bg-white border border-gray-200 text-brand-900 hover:border-gray-400 hover:bg-gray-50 transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                    Consultation
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-16">
+        <div class="ambient-glow"></div>
+        
+        <!-- Floating Glass UI Elements -->
+        <div class="absolute top-1/4 left-[15%] hidden lg:flex items-center space-x-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-gray-100 rounded-full shadow-sm animate-float">
+            <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+            <span class="text-xs font-medium text-gray-600">AI Agents Active</span>
+        </div>
+        <div class="absolute bottom-1/3 right-[15%] hidden lg:flex items-center space-x-2 px-4 py-2 bg-white/70 backdrop-blur-md border border-gray-100 rounded-full shadow-sm animate-float-delayed">
+            <i data-lucide="cpu" class="w-3 h-3 text-gray-500"></i>
+            <span class="text-xs font-medium text-gray-600">LLM Integrated</span>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center w-full">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 bg-gray-50 border border-gray-200 rounded-full mb-8 reveal">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-3 h-3">
+                <span class="text-[11px] font-semibold text-gray-600 tracking-wider uppercase">Cloud AI Certified</span>
+            </div>
+
+            <h1 class="text-6xl md:text-7xl lg:text-[5.5rem] font-display font-extrabold tracking-tighter mb-6 reveal delay-100 leading-[1.05] text-brand-900">
+                Practical AI.<br>
+                Real Impact.
+            </h1>
+            
+            <p class="mt-6 max-w-xl mx-auto text-lg text-gray-500 font-medium reveal delay-200 leading-relaxed">
+                Helping modern teams and individuals master Artificial Intelligence through practical training, real-world workflows, and enterprise consulting.
+            </p>
+            
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center reveal delay-200">
+                <a href="#programs" class="w-full sm:w-auto px-7 py-3.5 rounded-full font-medium text-sm bg-brand-900 text-white hover:bg-gray-800 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,0.1)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.15)] flex items-center justify-center group">
+                    Explore Programs
+                    <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#consultation" class="w-full sm:w-auto px-7 py-3.5 rounded-full font-medium text-sm bg-white border border-gray-200 text-brand-900 hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center justify-center">
+                    Book Consultation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="journey" class="py-24 bg-brand-50 relative border-t border-gray-100/50">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="mb-16 reveal">
+                <h2 class="text-3xl font-display font-bold text-brand-900 tracking-tight">Who are you?</h2>
+                <p class="text-gray-500 mt-2 text-sm font-medium">Tailored expertise for your specific context.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Journey Card 1 -->
+                <div class="spotlight-wrapper p-8 reveal cursor-pointer h-full flex flex-col group">
+                    <div class="spotlight-content flex flex-col h-full">
+                        <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mb-6 transition-colors group-hover:bg-brand-900 group-hover:text-white">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="text-xl font-display font-bold text-brand-900 mb-3">Student</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">Kickstart your tech career. Build a portfolio of real AI applications before graduation.</p>
+                        <a href="#programs" class="text-sm font-semibold text-brand-900 flex items-center group-hover:translate-x-1 transition-transform">
+                            View Path <i data-lucide="arrow-right" class="ml-1 w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Journey Card 2 -->
+                <div class="spotlight-wrapper p-8 reveal delay-100 cursor-pointer h-full flex flex-col group">
+                    <div class="spotlight-content flex flex-col h-full">
+                        <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mb-6 transition-colors group-hover:bg-brand-900 group-hover:text-white">
+                            <i data-lucide="briefcase" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="text-xl font-display font-bold text-brand-900 mb-3">Professional</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">10x your productivity. Automate complex workflows and build autonomous agents.</p>
+                        <a href="#programs" class="text-sm font-semibold text-brand-900 flex items-center group-hover:translate-x-1 transition-transform">
+                            View Path <i data-lucide="arrow-right" class="ml-1 w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Journey Card 3 -->
+                <div class="spotlight-wrapper p-8 reveal delay-200 cursor-pointer h-full flex flex-col group">
+                    <div class="spotlight-content flex flex-col h-full">
+                        <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mb-6 transition-colors group-hover:bg-brand-900 group-hover:text-white">
+                            <i data-lucide="building-2" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="text-xl font-display font-bold text-brand-900 mb-3">Enterprise</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">Transform your organization. Strategic consulting and custom workforce upskilling.</p>
+                        <a href="#consultation" class="text-sm font-semibold text-brand-900 flex items-center group-hover:translate-x-1 transition-transform">
+                            Book Strategy <i data-lucide="arrow-right" class="ml-1 w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="programs" class="py-32 bg-white relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-brand-900 tracking-tight">Programs & Consulting</h2>
+                <p class="text-gray-500 mt-3 text-sm font-medium">Focused curriculums over generic courses.</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Program 1 -->
+                <div class="spotlight-wrapper p-8 reveal">
+                    <div class="spotlight-content flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="mb-6 md:mb-0">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="text-xl font-display font-bold text-brand-900">AI Job Ready</h3>
+                                <span class="px-2.5 py-0.5 rounded-md bg-gray-100 text-[10px] font-semibold text-gray-600 uppercase tracking-wide">21 Hours</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mb-4">Core AI fundamentals designed for students.</p>
+                            <div class="text-2xl font-display font-bold text-brand-900">₹2,499</div>
+                        </div>
+                        
+                        <div class="w-full md:w-64 flex flex-col gap-3">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9R6kUpV7sg_JauunugNx-VkcmGl7Km4K6mT3_HxrLGk52ng/viewform?usp=sharing&ouid=115445748390750860430" target="_blank" rel="noopener noreferrer" class="w-full px-5 py-3 rounded-full bg-brand-900 text-white text-sm font-medium hover:bg-gray-800 transition-all shadow-sm flex items-center justify-center">
+                                Enroll Now
+                            </a>
+                            <button onclick="toggleExpand(this)" class="w-full px-5 py-3 rounded-full bg-white border border-gray-200 text-brand-900 text-sm font-medium hover:bg-gray-50 transition-all flex items-center justify-between group">
+                                <span>Curriculum</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Expandable Curriculum -->
+                    <div class="expand-content mt-4">
+                        <div class="expand-inner">
+                            <div class="pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> AI Fundamentals & History</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Prompt Engineering Basics</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Using LLMs (ChatGPT/Gemini)</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Practical Micro-Projects</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Career Path Guidance</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Completion Certificate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program 2 (Mastery) -->
+                <div class="spotlight-wrapper p-8 reveal delay-100 border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gray-200 via-gray-400 to-gray-200"></div>
+                    <div class="spotlight-content flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="mb-6 md:mb-0">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="text-xl font-display font-bold text-brand-900">AI Mastery</h3>
+                                <span class="px-2.5 py-0.5 rounded-md bg-brand-900 text-[10px] font-semibold text-white uppercase tracking-wide">Most Popular</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mb-4">Advanced workflow automation and agent building.</p>
+                            <div class="text-2xl font-display font-bold text-brand-900">₹6,999</div>
+                        </div>
+                        
+                        <div class="w-full md:w-64 flex flex-col gap-3">
+                            <a href="YOUR_RAZORPAY_PAYMENT_LINK_HERE" target="_blank" rel="noopener noreferrer" class="w-full px-5 py-3 rounded-full bg-brand-900 text-white text-sm font-medium hover:bg-gray-800 transition-all shadow-md flex items-center justify-center">
+                                Enroll Now
+                            </a>
+                            <button onclick="toggleExpand(this)" class="w-full px-5 py-3 rounded-full bg-white border border-gray-200 text-brand-900 text-sm font-medium hover:bg-gray-50 transition-all flex items-center justify-between group">
+                                <span>Curriculum</span>
+                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Curriculum -->
+                    <div class="expand-content mt-4">
+                        <div class="expand-inner">
+                            <div class="pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center text-sm text-brand-900 font-medium"><i data-lucide="check" class="w-4 h-4 mr-2 text-gray-400"></i> Everything in Job Ready</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Advanced Prompt Engineering</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Autonomous AI Agents</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> API Integrations & Webhooks</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Custom Knowledge Bases (RAG)</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Capstone Portfolio Project</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="spotlight-wrapper p-8 reveal delay-200">
+                    <div class="spotlight-content flex flex-col md:flex-row md:items-start justify-between">
+                        <div class="mb-6 md:mb-0">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="text-xl font-display font-bold text-brand-900">Corporate / College</h3>
+                                <span class="px-2.5 py-0.5 rounded-md bg-gray-100 text-[10px] font-semibold text-gray-600 uppercase tracking-wide">Custom</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mb-4">Faculty development and corporate upskilling.</p>
+                            <div class="text-lg font-display font-bold text-gray-400">Custom Pricing</div>
+                        </div>
+                        
+                        <div class="w-full md:w-64 flex flex-col gap-3">
+                            <a href="#consultation" class="w-full px-5 py-3 rounded-full bg-white border border-gray-200 text-brand-900 text-sm font-medium hover:border-gray-400 hover:bg-gray-50 transition-all text-center flex items-center justify-center">
+                                Book Consultation
+                            </a>
+                            <button onclick="toggleExpand(this)" class="w-full px-5 py-3 rounded-full bg-transparent text-gray-500 text-sm font-medium hover:text-brand-900 transition-colors flex items-center justify-center">
+                                View Capabilities <i data-lucide="chevron-down" class="w-4 h-4 ml-2 transition-transform duration-300"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Curriculum -->
+                    <div class="expand-content mt-4">
+                        <div class="expand-inner">
+                            <div class="pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Custom Curriculum Design</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> On-Premise Workshops</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Faculty Development Programs</div>
+                                <div class="flex items-center text-sm text-gray-600"><div class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3"></div> Strategic Implementation Consulting</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="workflow" class="py-32 bg-brand-50 border-y border-gray-100/50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-24 reveal">
+                <h2 class="text-3xl font-display font-bold text-brand-900 tracking-tight">The Databloom Methodology</h2>
+            </div>
+
+            <div class="relative max-w-4xl mx-auto">
+                <!-- Linear connecting line -->
+                <div class="hidden md:block absolute top-8 left-[10%] w-[80%] h-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col items-center text-center reveal">
+                        <div class="w-16 h-16 bg-white border border-gray-200 rounded-2xl flex items-center justify-center mb-6 shadow-sm z-10 transition-transform hover:scale-110 duration-300">
+                            <i data-lucide="book-open" class="w-5 h-5 text-brand-900"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-brand-900 mb-1">Learn</h4>
+                        <p class="text-xs text-gray-500 font-medium">Master the underlying concepts.</p>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex flex-col items-center text-center reveal delay-100">
+                        <div class="w-16 h-16 bg-white border border-gray-200 rounded-2xl flex items-center justify-center mb-6 shadow-sm z-10 transition-transform hover:scale-110 duration-300">
+                            <i data-lucide="hammer" class="w-5 h-5 text-brand-900"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-brand-900 mb-1">Build</h4>
+                        <p class="text-xs text-gray-500 font-medium">Construct practical solutions.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex flex-col items-center text-center reveal delay-200">
+                        <div class="w-16 h-16 bg-white border border-gray-200 rounded-2xl flex items-center justify-center mb-6 shadow-sm z-10 transition-transform hover:scale-110 duration-300">
+                            <i data-lucide="rocket" class="w-5 h-5 text-brand-900"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-brand-900 mb-1">Deploy</h4>
+                        <p class="text-xs text-gray-500 font-medium">Integrate into workflows.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex flex-col items-center text-center reveal delay-300">
+                        <div class="w-16 h-16 bg-brand-900 border border-brand-900 rounded-2xl flex items-center justify-center mb-6 shadow-lg z-10 transition-transform hover:scale-110 duration-300">
+                            <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-brand-900 mb-1">Automate</h4>
+                        <p class="text-xs text-gray-500 font-medium">Scale output exponentially.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center divide-x divide-gray-100">
+                <div class="reveal">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-brand-900 tracking-tighter mb-1">1k<span class="text-gray-300">+</span></div>
+                    <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Learners</div>
+                </div>
+                <div class="reveal delay-100">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-brand-900 tracking-tighter mb-1">25<span class="text-gray-300">+</span></div>
+                    <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Institutions</div>
+                </div>
+                <div class="reveal delay-200">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-brand-900 tracking-tighter mb-1">50<span class="text-gray-300">+</span></div>
+                    <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Workshops</div>
+                </div>
+                <div class="reveal delay-300">
+                    <div class="text-4xl md:text-5xl font-display font-bold text-brand-900 tracking-tighter mb-1">4.8</div>
+                    <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-widest flex items-center justify-center">
+                        Rating <i data-lucide="star" class="w-3 h-3 ml-1 fill-gray-300 text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="spotlight-wrapper p-10 md:p-12 flex flex-col md:flex-row items-center gap-10 reveal">
+                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-50 flex-shrink-0 relative overflow-hidden border border-gray-100 shadow-sm flex items-center justify-center">
+                    <i data-lucide="user" class="w-12 h-12 text-gray-300"></i>
+                </div>
+                
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-display font-bold text-brand-900 mb-1 tracking-tight">Led by Verified Expertise</h3>
+                    <p class="text-gray-500 font-semibold text-[11px] tracking-widest uppercase mb-5">Founder, Databloom AI & Tech</p>
+                    
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6 font-medium max-w-lg">
+                        Bridging the gap between theoretical AI and enterprise implementation. Leveraging Google Cloud certified expertise to craft intensive curriculums that deliver tangible, automated outcomes for modern organizations.
+                    </p>
+                    
+                    <a href="#consultation" class="inline-flex items-center text-sm font-semibold text-brand-900 hover:text-gray-600 transition-colors group">
+                        Book a Strategy Call <i data-lucide="arrow-right" class="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="consultation" class="py-32 relative bg-brand-50 overflow-hidden text-center border-t border-gray-100">
+        <!-- Ambient subtle center glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white opacity-60 blur-[80px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-2xl mx-auto px-6 relative z-10 reveal">
+            <h2 class="text-4xl md:text-5xl font-display font-bold text-brand-900 tracking-tighter mb-6">
+                Ready to adapt?
+            </h2>
+            <p class="text-gray-500 mb-10 text-sm font-medium">Join the professionals building the next era of technology.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#programs" class="w-full sm:w-auto px-8 py-3.5 rounded-full font-medium text-sm bg-brand-900 text-white hover:bg-gray-800 transition-all shadow-md hover:shadow-lg flex items-center justify-center">
+                    Enroll Now
+                </a>
+                <a href="#consultation" class="w-full sm:w-auto px-8 py-3.5 rounded-full font-medium text-sm bg-white border border-gray-200 text-brand-900 hover:border-gray-400 hover:bg-gray-50 transition-all shadow-sm flex items-center justify-center">
+                    Book Consultation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-10 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-[13px] font-medium text-gray-400">
+            <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                <i data-lucide="layers" class="w-4 h-4 text-brand-900"></i>
+                <span class="text-brand-900 font-bold font-display tracking-tight text-sm">Databloom</span>
+                <span class="ml-2">&copy; 2026.</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#programs" class="hover:text-brand-900 transition-colors">Programs</a>
+                <a href="#consultation" class="hover:text-brand-900 transition-colors">Consulting</a>
+                <a href="#" class="hover:text-brand-900 transition-colors">Privacy</a>
+                <a href="#" class="hover:text-brand-900 transition-colors">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Reveal Animations on Scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Sticky Navbar Blur Logic
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-[0_4px_20px_rgba(0,0,0,0.03)]');
+                navbar.querySelector('div.absolute').classList.replace('bg-white/60', 'bg-white/80');
+            } else {
+                navbar.classList.remove('shadow-[0_4px_20px_rgba(0,0,0,0.03)]');
+                navbar.querySelector('div.absolute').classList.replace('bg-white/80', 'bg-white/60');
+            }
+        });
+
+        // Spotlight Card Effect
+        document.querySelectorAll('.spotlight-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('mousemove', e => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                wrapper.style.setProperty('--mouse-x', `${x}px`);
+                wrapper.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Expandable Curriculum Cards
+        function toggleExpand(button) {
+            const content = button.parentElement.parentElement.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            content.classList.toggle('open');
+            
+            if (content.classList.contains('open')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>
